@@ -101,7 +101,7 @@ async def extract_info(image: UploadFile = File(...)):
     pan = result.get("PAN Number")
 
     if aadhar:
-        if not valid_aadhar(aadhar): 
+        if not valid_aadhar(aadhar):
             return {"error":"Invalid Aadhar number extracted. Please retry with a clearer image."}
     elif pan:
         if not valid_pan(pan):
