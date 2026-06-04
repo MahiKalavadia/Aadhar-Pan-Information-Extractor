@@ -2,7 +2,7 @@ from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from groq import Groq
 from dotenv import load_dotenv
-import os, base64, json, re
+import os, json
 from encoder import encode_image
 from validators import valid_aadhar, valid_pan
 
@@ -15,6 +15,8 @@ app = FastAPI(
 )
 
 api_key = os.environ.get("GROQ_API_KEY")
+if not api_key:
+    raise RuntimeError("API key is not accessible. Check API key!")
 
 client = Groq(api_key=api_key)
 
@@ -101,12 +103,12 @@ async def extract_info(image: UploadFile = File(...)):
 
     if aadhar:
         if not valid_aadhar(aadhar):
-            return {"error":"Invalid aadhar number extracted"}
+            return {"error":"Invalid Aadhar number extracted. Please retry with a clearer image."}
     elif pan:
         if not valid_pan(pan):
-            return {"error":"Invalid pan number extracted"}
+            return {"error":"Invalid PAN number extracted. Please retry with a clearer image."}
     else:
-        return {"error":"Neither aadhar nor pan extracted!"}
+        return {"error":"Neither Aadhar nor PAN was extracted. Please try again with a clearer image."}
     
     return result
 
