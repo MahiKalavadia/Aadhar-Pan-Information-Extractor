@@ -52,7 +52,6 @@ async def extract_info(image: UploadFile = File(...)):
     Instruction: Never include any piece of extra information except those 4 fields 
 
     """
-
     response = client.chat.completions.create(
         model="meta-llama/llama-4-scout-17b-16e-instruct",
 
@@ -102,7 +101,7 @@ async def extract_info(image: UploadFile = File(...)):
     pan = result.get("PAN Number")
 
     if aadhar:
-        if not valid_aadhar(aadhar):
+        if not valid_aadhar(aadhar): 
             return {"error":"Invalid Aadhar number extracted. Please retry with a clearer image."}
     elif pan:
         if not valid_pan(pan):
@@ -111,4 +110,3 @@ async def extract_info(image: UploadFile = File(...)):
         return {"error":"Neither Aadhar nor PAN was extracted. Please try again with a clearer image."}
     
     return result
-
